@@ -20,11 +20,11 @@ class ArtistSerializer(serializers.ModelSerializer):
     def get_song_count(self, obj):
         return obj.song_count
 
-
 class ArtistView(ViewSet):
-    """Level up Artist view"""
+    """Artist view"""
 
     def retrieve(self, request, pk):
+        """function to get single Artist"""
         try:
             artist = Artist.objects.get(pk=pk)
             serializer = ArtistSerializer(artist)
@@ -33,11 +33,13 @@ class ArtistView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         
     def list(self, request):
+        """function to get all Artists"""
         artists = Artist.objects.all()
         serializer = ArtistSerializer(artists, many=True)
         return Response(serializer.data)
     
     def create(self, request):
+        """function to create a new Artist"""
         artist = Artist.objects.create(
             name=request.data["name"],
             age=request.data["age"],
@@ -47,6 +49,7 @@ class ArtistView(ViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def update(self, request, pk):
+        """function to get update an Artist"""
         artist = Artist.objects.get(pk=pk)
         artist.name = request.data["name"]
         artist.age = request.data["age"]
@@ -57,6 +60,7 @@ class ArtistView(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def destroy(self, request, pk):
+        """function to get delete an Artist"""
         artist = Artist.objects.get(pk=pk)
         artist.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
