@@ -13,8 +13,10 @@ class SongGenreSerializer(serializers.ModelSerializer):
         fields = ('song', 'genre')
 
 class SongGenreView(ViewSet):
+    """song genre views"""
 
     def retrieve(self, request, pk):
+        """get a single song genre join"""
         try:
             song_genre = SongGenre.objects.get(pk=pk)
             serializer = SongGenreSerializer(song_genre)
@@ -23,7 +25,7 @@ class SongGenreView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         
     def list(self, request):
-
+        """get a all song genre joins"""
         song_genres = SongGenre.objects.all()
         serializer = SongGenreSerializer(song_genres, many=True)
         return Response(serializer.data)

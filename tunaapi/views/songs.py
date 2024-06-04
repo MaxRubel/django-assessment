@@ -13,7 +13,7 @@ class SongSerializer(serializers.ModelSerializer):
         depth = 1 
 
 class SongView(ViewSet):
-    """Level up Song view"""
+    """Song view"""
 
     def retrieve(self, request, pk):
         try:
@@ -25,11 +25,13 @@ class SongView(ViewSet):
                 return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         
     def list(self, request):
+         """function to get all songs"""
          songs = Song.objects.all()
          serializer = SongSerializer(songs, many=True)
          return Response(serializer.data)
     
     def create(self, request):
+         """function to create a song"""
          song = Song.objects.create(
             title = request.data["title"],
             artist_id = request.data["artist_id"],
@@ -50,6 +52,7 @@ class SongView(ViewSet):
          return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def update(self, request, pk):
+        """function to update a song"""
         song = Song.objects.get(pk=pk)
         song.title = request.data["title"]
         song.album = request.data["album"]
@@ -62,6 +65,7 @@ class SongView(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def destroy(self, request, pk):
+         """function to delte a song"""
          song = Song.objects.get(pk=pk)
          song.delete()
          return Response(None, status=status.HTTP_204_NO_CONTENT)
