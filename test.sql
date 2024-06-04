@@ -1,0 +1,1 @@
+DELETE from tunaapi_artist WHERE id = 1
